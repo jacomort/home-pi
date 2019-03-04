@@ -2,8 +2,9 @@
 home automation
 
 
-## Raspberry
-MQTT controller
-MQTT listener
-  store sensor data
+Raspberry
+	MQTT controller
+	MQTT listener
+		store sensor data
+		
 # sensorDB
