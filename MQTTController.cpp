@@ -8,11 +8,13 @@
 #include <time.h>
 
 // Constants that identify nodes
-const uint16_t pi_node = 0;
-const uint16_t node1 = 1;
-const uint16_t node2 = 2;
-const uint16_t node3 = 3;
-const uint16_t node4 = 4;
+typedef enum {
+	pi_node = 0,
+	node1 = 1,
+	node2 = 2,
+	node3 = 3,
+	node4 = 4,
+} node_id;
 
 const char* action_channel1 = "home/bedroom/light";
 const char* action_channel2 = "home/kitchen/light";
