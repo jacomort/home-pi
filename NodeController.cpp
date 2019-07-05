@@ -47,15 +47,15 @@ int main(int argc, char** argv)
 			// We can only handle type 1 sensor nodes for now should be a case statement
 			if (header.type == '1') {
                             message_t1 sensormessage;
-			// Read the message
-			network.read(header, &sensormessage, sizeof(sensormessage));
-				// Print it out in case someone's watching
-				printf("Data received from node %i\n", header.from_node);
-                                printf("node: %i, Temp: %f\n", header.from_node, sensormessage.temperature);
-                                printf("Humidity: %f\n", sensormessage.humidity);
-                                                printf("Door: %i\n", sensormessage.dooropen);
-						// read other sensor data from node 2 here
-					// add as many case statements as you have nodes
+			    // Read the message
+			    network.read(header, &sensormessage, sizeof(sensormessage));
+			    // Print it out in case someone's watching
+			    printf("Data received from node %i\n", header.from_node);
+                            printf("node: %i, Temp: %f\n", header.from_node, sensormessage.temperature);
+                            printf("node: %i, Humidity: %f\n", header.from_nod, sensormessage.humidity);
+                            printf("node: %i, Door: %i\n", header.from_nod, sensormessage.dooropen);
+		            // read other sensor data from node 2 here
+		
 			} else {
 				// This is not a type we re
                                 printf("Unknow header: %c\n", header.type);
