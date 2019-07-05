@@ -32,7 +32,8 @@ int main(int argc, char** argv)
 	radio.printDetails();
 	
 	network.update();
-	
+	time_t time_stamp;
+
 	while (true) {
 		// Get the latest network info
 		network.update();
@@ -43,6 +44,7 @@ int main(int argc, char** argv)
 			RF24NetworkHeader header;
 			network.peek(header);
                         printf("header %c\n", header.type);
+                        time_stamp = time(NULL);
 			// Have a peek at the data to see the heder
 			// We can only handle type 1 sensor nodes for now should be a case statement
 			if (header.type == '1') {
@@ -51,9 +53,9 @@ int main(int argc, char** argv)
 			    network.read(header, &sensormessage, sizeof(sensormessage));
 			    // Print it out in case someone's watching
 			    printf("Data received from node %i\n", header.from_node);
-                            printf("node: %i, Temp: %f\n", header.from_node, sensormessage.temperature);
-                            printf("node: %i, Humidity: %f\n", header.from_nod, sensormessage.humidity);
-                            printf("node: %i, Door: %i\n", header.from_nod, sensormessage.dooropen);
+                            printf("node: %i, Temp: %f, TimeStamp: %ld\n", header.from_node, sensormessage.temperature, time_stamp);
+                            printf("node: %i, Humidity: %f, TimeStamp: %ld\n", header.from_node, sensormessage.humidity, time_stamp);
+                            printf("node: %i, Door: %i, TimeStamp: %ld\n", header.from_node, sensormessage.dooropen, time_stamp);
 		            // read other sensor data from node 2 here
 		
 			} else {
