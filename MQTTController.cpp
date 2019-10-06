@@ -111,52 +111,37 @@ int main(int argc, char** argv)
                         printf("header %c\n", header.type);
 			// Have a peek at the data to see the heder
 			// We can only handle type 1 sensor nodes for now should be a case statement
-			if (header.type == '1') {
-                                message_1 sensormessage;
-				// Read the message
+			switch (header.type)
+			{
+			case '1':
+				message_1 sensormessage;
 				network.read(header, &sensormessage, sizeof(sensormessage));
-				// Print it out in case someone's watching
-				printf("Data received from node %i\n", header.from_node);
 				char buffer [50];
-                                switch (header.from_node) {
-					case node1:
-                                                printf("Temp: %f\n", sensormessage.temperature);
-                                                printf("Humidity: %f\n", sensormessage.humidity);
-                                                printf("Door: %i\n", sensormessage.dooropen);
-						sprintf (buffer, "mosquitto_pub -t home/bedroom/temperature -m \"%f\"", sensormessage.temperature);
-						system(buffer);
-						sprintf (buffer, "mosquitto_pub -t home/bedroom/humidity -m \"%f\"", sensormessage.humidity);
-						system(buffer);
-                                                sprintf (buffer, "mosquitto_pub -t home/bedroom/dooropen -m \"%i\"", sensormessage.dooropen);
-                                                system(buffer);
-						break;
-					case node2:
-						printf("node2 Temp: %f\n", sensormessage.temperature);
-                                                printf("node2 Humidity: %f\n", sensormessage.humidity);
-                                                printf("node2 Door: %i\n", sensormessage.dooropen);
-                                                sprintf (buffer, "mosquitto_pub -t home/frontdoor/temperature -m \"%f\"", sensormessage.temperature);
-                                                system(buffer);
-                                                sprintf (buffer, "mosquitto_pub -t home/frontdoor/humidity -m \"%f\"", sensormessage.humidity);
-                                                system(buffer);
-                                                sprintf (buffer, "mosquitto_pub -t home/frontdoor/dooropen -m \"%i\"", sensormessage.dooropen);
-                                                system(buffer);
-                                                break;
-						// read other sensor data from node 2 here
-						break;
-					// add as many case statements as you have nodes
-					default:
-                                                sprintf (buffer, "mosquitto_pub -t home/bedroom/temperature -m \"%f\"", sensormessage.temperature);
-                                                system(buffer);
-                                                sprintf (buffer, "mosquitto_pub -t home/bedroom/humidity -m \"%f\"", sensormessage.humidity);
-                                                system(buffer);
-						printf("Unknown node %i\n", header.from_node);
-						break;
-				}
-			} else {
-				// This is not a type we re
-                                printf("Unknow header: %c\n", header.type);
-				//printf("Unknown message received from node %i\n", header.from_node);
+				printf("Node: %i", header.from_node);
+				printf("Temp: %i", sensormessage.temperature);
+				printf("Humidity: %i", sensormessage.humidity);
+				printf("Door: %i", sensormessage.dooropen);
+				sprintf (buffer, "mosquitto_pub -t home/sensors -m \"%i,temperature,%f\"", header.from_node, sensormessage.temperature);
+				sprintf (buffer, "mosquitto_pub -t home/sensors -m \"%i,humidity,%f\"", header.from_node, sensormessage.humidity);
+				sprintf (buffer, "mosquitto_pub -t home/sensors -m \"%i,dooropen,%f\"", header.from_node, sensormessage.dooropen);
+				break;
+			case '2':
+				message_1 sensormessage;
+				network.read(header, &sensormessage, sizeof(sensormessage));
+				char buffer [50];
+				printf("Node: %i", header.from_node);
+				printf("Temp: %i", sensormessage.temperature);
+				printf("Humidity: %i", sensormessage.humidity);
+				printf("Door: %i", sensormessage.dooropen);
+				sprintf (buffer, "mosquitto_pub -t home/sensors -m \"%i,temperature,%f\"", header.from_node, sensormessage.temperature);
+				sprintf (buffer, "mosquitto_pub -t home/sensors -m \"%i,humidity,%f\"", header.from_node, sensormessage.humidity);
+				sprintf (buffer, "mosquitto_pub -t home/sensors -m \"%i,dooropen,%f\"", header.from_node, sensormessage.dooropen);
+				break;
+			default:
+				printf("Unknow header: %c\n", header.type);
+				break;
 			}
+
 		}
 		
 		// Check for messages on our subscribed channels
